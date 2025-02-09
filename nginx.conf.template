@@ -1,0 +1,24 @@
+events { }
+
+http {
+    upstream frontend {
+        server frontend:3000;
+    }
+    
+    upstream backend {
+        server backend:${BACKEND_PORT};
+    }
+    
+    server {
+        listen 80;
+
+        location /containers {
+            proxy_pass http://backend/containers;
+        }
+
+        location / {
+            proxy_pass http://frontend;
+        }
+    }
+}
+
